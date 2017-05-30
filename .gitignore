@@ -1,0 +1,7 @@
+*~
+bin/
+.idea
+darwin-amd64
+*.tar.gz
+linux-amd64
+*.tgz

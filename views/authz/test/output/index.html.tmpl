@@ -1,0 +1,13 @@
+<html>
+  <head>
+    <title>{{ .title }}</title>
+  </head>
+  <body>
+    <h1>{{ .title }}</h1>
+    <ul>
+      {{ range $index, $task := .tasks }}
+        <li>{{ $index }}: {{ $task.Text }} </li>
+      {{ end }}
+    </ul>
+  </body>
+</html>

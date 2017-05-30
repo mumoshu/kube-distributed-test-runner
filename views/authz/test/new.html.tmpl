@@ -1,0 +1,41 @@
+{{ define "authz/test/new.html.tmpl" }}
+<html>
+  <head>
+    <title>{{ .title }}</title>
+  </head>
+  <body>
+    <h1>{{ .title }}</h1>
+    <form class="ui form" action="/authz/test" method="post">
+      <div class="field">
+        <label>OAuth2 Client ID</label>
+         <input type="text" name="oauth2_client_id" placeholder="OAuth2 Client ID"></input>
+      </div>
+      <div class="field">
+        <label>OAuth2 Client Secret</label>
+        <input type="text" name="oauth2_client_secret" placeholder="OAuth2 Client Secret"></input>
+      </div>
+      <div class="field">
+        <label>OAuth2 Authorization Endpoint URL</label>
+        <input type="text" name="oauth2_authz_endpoint_url" placeholder="OAuth2 Authorization Endpoint URL"></input>
+      </div>
+      <div class="field">
+        <label>OAuth2 Token Endpoint URL</label>
+        <input type="text" name="oauth2_token_endpoint_url" placeholder="OAuth2 Token Endpoint URL"></input>
+      </div>
+      <div class="field">
+        <label>OAuth2 Scopes</label>
+        <input type="text" name="scopes" placeholder="OAuth2 Scopes"></input>
+      </div>
+      <div class="field">
+        <label>Assertion HTTP Request Method</label>
+        <input type="text" name="http_request_method" placeholder="Assertion HTTP Request Method"></input>
+      </div>
+      <div class="field">
+        <label>Assertion HTTP Request URL</label>
+        <input type="text" name="http_request_url" placeholder="Assertion HTTP Request URL"></input>
+      </div>
+      <button class="ui button" type="submit">Submit</button>
+    </form>
+  </body>
+</html>
+{{end}}

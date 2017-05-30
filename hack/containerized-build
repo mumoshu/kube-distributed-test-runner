@@ -1,0 +1,16 @@
+#!/bin/bash
+set -euo pipefail
+
+SRC_ROOT=$(git rev-parse --show-toplevel)
+SRC_MOUNT_DIR="/go/src/github.com/mumoshu/kube-selenium"
+
+docker run --rm -i \
+    -v "${SRC_ROOT}:${SRC_MOUNT_DIR}:z" -w ${SRC_MOUNT_DIR} \
+    --entrypoint /bin/bash golang:1.8.3  <<EOF
+#!/bin/bash
+set -euo pipefail
+wget -O /tmp/glide.tgz https://github.com/Masterminds/glide/releases/download/v0.12.3/glide-v0.12.3-linux-amd64.tar.gz
+tar -zxvf /tmp/glide.tgz -C /tmp
+mv /tmp/linux-amd64/glide /usr/local/bin
+./hack/build-arch
+EOF

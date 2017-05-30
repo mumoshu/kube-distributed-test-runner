@@ -1,0 +1,23 @@
+#!/usr/bin/env bash -e
+
+web() {
+  open $(minikube service selenium-hub --url)/grid/console
+}
+
+add_node() {
+  kubectl run selenium-node-chrome --image selenium/node-chrome:2.53.1 --env="HUB_PORT_4444_TCP_ADDR=selenium-hub" --env="HUB_PORT_4444_TCP_PORT=4444"
+}
+
+add_debug_node() {
+  kubectl run selenium-node-chrome-debug --image selenium/node-chrome-debug:2.53.0 --env="HUB_PORT_4444_TCP_ADDR=selenium-hub" --env="HUB_PORT_4444_TCP_PORT=4444"
+}
+
+py() {
+  if ! kubectl get deployment selenium-python; then
+    kubectl run selenium-python --image=google/python-hello
+  fi
+  PODNAME=`kubectl get pods --selector="run=selenium-python" --output=template --template="{{with index .items 0}}{{.metadata.name}}{{end}}"`
+  kubectl exec --stdin=true --tty=true $PODNAME bash
+}
+
+"$@"

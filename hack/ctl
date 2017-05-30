@@ -1,0 +1,15 @@
+#!/bin/bash -e
+
+mysql_password() {
+  printf $(printf '%s' `kubectl get secret kube-selenium-mysql-mysql -o jsonpath="{.data.mysql-root-password}"`) | base64 --decode
+}
+
+redis_password() {
+  kubectl get secret --namespace default kube-selenium-redis-redis -o jsonpath="{.data.redis-password}" | base64 --decode
+}
+
+redis() {
+  kubectl run kube-selenium-redis-redis-client --rm --tty -i --env REDIS_PASSWORD=$(redis_password) --image bitnami/redis:3.2.9-r0 -- bash
+}
+
+"$@"
