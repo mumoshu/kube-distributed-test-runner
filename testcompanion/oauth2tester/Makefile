@@ -1,13 +1,3 @@
-.PHONY: console
-console:
-	open $$(minikube service selenium-hub --url)/grid/console
-
-add-node:
-	kubectl run selenium-node-chrome --image selenium/node-chrome:2.53.1 --env="HUB_PORT_4444_TCP_ADDR=selenium-hub" --env="HUB_PORT_4444_TCP_PORT=4444"
-
-python:
-	kubectl run selenium-python --image=google/python-hello
-
 build:
 	hack/containerized-build
 

@@ -1,0 +1,3 @@
+#!/bin/sh
+
+kube-distributed-test-runner run pytest

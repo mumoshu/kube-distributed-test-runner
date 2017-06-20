@@ -1,0 +1,75 @@
+---
+#filter_raw_request: true
+commands:
+  check: |
+    KUBE_URL=${SMUGGLER_k8s_api_endpoint_url:-https://kubernetes}
+    NAMESPACE=${SMUGGLER_k8s_namespace:-default}
+    KUBECTL="/usr/local/bin/kubectl --server=$KUBE_URL --namespace=$NAMESPACE"
+
+    # configure SSL Certs if available
+    if [[ "$KUBE_URL" =~ https.* ]]; then
+      KUBE_CA_BASE64="${SMUGGLER_k8s_ca}"
+      KUBE_SERVICE_ACCOUNT_TOKEN_BASE64=${SMUGGLER_k8s_service_account_token}
+      CA_PATH="/root/.kube/ca.pem"
+      
+      mkdir -p /root/.kube
+      echo "$KUBE_CA_BASE64" | base64 -d > $CA_PATH
+      KUBE_SERVICE_ACCOUNT_TOKEN=$(echo "$KUBE_SERVICE_ACCOUNT_TOKEN_BASE64" | base64 -d)
+      
+      KUBECTL="$KUBECTL --certificate-authority=$CA_PATH --token=$KUBE_SERVICE_ACCOUNT_TOKEN"
+    fi
+
+    $KUBECTL get configmap ${SMUGGLER_configmap} >/dev/null
+
+    $KUBECTL get configmaps ${SMUGGLER_configmap} -o json \
+      | jq -r '.data["kubernetes.pod.name"]' > kubernetes-pod-name
+
+    kube_pod_name=$(cat kubernetes-pod-name)
+
+    if [ "$kube_pod_name" == "" ]; then
+      echo No kubernetes pod named $kube_pod_name exists 1>&2
+      exit 1
+    fi
+
+    mkdir -p /copied
+    $KUBECTL cp $kube_pod_name:${SMUGGLER_path} /copied${SMUGGLER_path} 1>&2
+
+    find /copied${SMUGGLER_path} -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum | cut -d' ' -f 1 > current-version
+
+    current_version=$(cat current-version)
+
+    if [ "$current_version" != "${SMUGGLER_VERSION_ID:-}" ]; then
+      echo "$current_version" >> ${SMUGGLER_OUTPUT_DIR}/versions
+    fi
+
+  in: |
+    KUBE_URL=${SMUGGLER_k8s_api_endpoint_url:-https://kubernetes}
+    NAMESPACE=${SMUGGLER_k8s_namespace:-default}
+    KUBECTL="/usr/local/bin/kubectl --server=$KUBE_URL --namespace=$NAMESPACE"
+
+    # configure SSL Certs if available
+    if [[ "$KUBE_URL" =~ https.* ]]; then
+      KUBE_CA_BASE64="${SMUGGLER_k8s_ca}"
+      KUBE_SERVICE_ACCOUNT_TOKEN_BASE64=${SMUGGLER_k8s_service_account_token}
+      CA_PATH="/root/.kube/ca.pem"
+      
+      mkdir -p /root/.kube
+      echo "$KUBE_CA_BASE64" | base64 -d > $CA_PATH
+      KUBE_SERVICE_ACCOUNT_TOKEN=$(echo "$KUBE_SERVICE_ACCOUNT_TOKEN_BASE64" | base64 -d)
+      
+      KUBECTL="$KUBECTL --certificate-authority=$CA_PATH --token=$KUBE_SERVICE_ACCOUNT_TOKEN"
+    fi
+
+    $KUBECTL get configmap ${SMUGGLER_configmap} >/dev/null
+
+    $KUBECTL get configmaps ${SMUGGLER_configmap} -o json \
+      | jq -r '.data["kubernetes.pod.name"]' > kubernetes-pod-name
+
+    kube_pod_name=$(cat kubernetes-pod-name)
+
+    if [ "$kube_pod_name" == "" ]; then
+      echo No kubernetes pod named $kube_pod_name exists 1>&2
+      exit 1
+    fi
+
+    $KUBECTL cp $kube_pod_name:${SMUGGLER_path} ${SMUGGLER_DESTINATION_DIR} 1>&2

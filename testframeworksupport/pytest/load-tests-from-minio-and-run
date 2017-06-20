@@ -1,0 +1,10 @@
+#!/usr/bin/env python
+
+from minio import Minio
+from minio.error import ResponseError
+
+minioClient = Minio('minio:9000',
+access_key='Q3AM3UQ867SPQQA43P2F',
+  secret_key='zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG',
+  secure=True)
+

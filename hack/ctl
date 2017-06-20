@@ -12,4 +12,20 @@ redis() {
   kubectl run kube-selenium-redis-redis-client --rm --tty -i --env REDIS_PASSWORD=$(redis_password) --image bitnami/redis:3.2.9-r0 -- bash
 }
 
+chrome_node_vnc_proxy() {
+  kubectl port-forward --namespace default   $(kubectl get pods --namespace default \
+    -l app=selenium-grid-selenium-chrome-debug \
+    -o jsonpath='{ .items[0].metadata.name }') 5900
+}
+
+oauth2_test_webapp_proxy() {
+  POD_NAME=$(kubectl get pods --namespace default -l "run=kube-selenium" -o jsonpath="{.items[0].metadata.name}")
+  kubectl port-forward --namespace default $POD_NAME 8000:8000
+}
+
+concourse_web_proxy() {
+  POD_NAME=$(kubectl get pods --namespace default -l "app=concourse-web" -o jsonpath="{.items[0].metadata.name}")
+  kubectl port-forward --namespace default $POD_NAME 8080:8080
+}
+
 "$@"
