@@ -5,9 +5,9 @@ RUN apt-get update && apt-get install --yes ca-certificates \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
-ADD linux-amd64/kube-selenium kube-selenium
+ADD linux-amd64/oauth2clientweb oauth2clientweb
 ADD views views
 
-CMD ./kube-selenium
+ENTRYPOINT ["/oauth2clientweb"]
 
 EXPOSE 8000 80

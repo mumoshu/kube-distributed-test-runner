@@ -1,11 +1,11 @@
 #!/bin/bash
-set -euo pipefail
+set -vxeuo pipefail
 
 SRC_ROOT=$(git rev-parse --show-toplevel)
-SRC_MOUNT_DIR="/go/src/github.com/mumoshu/kube-selenium"
+SRC_MOUNT_DIR="/go/src/github.com/mumoshu/kube-distributed-test-runner"
 
 docker run --rm -i \
-    -v "${SRC_ROOT}:${SRC_MOUNT_DIR}:z" -w ${SRC_MOUNT_DIR} \
+    -v "${SRC_ROOT}:${SRC_MOUNT_DIR}:z" -w ${SRC_MOUNT_DIR}/testdep/oauth2clientweb \
     --entrypoint /bin/bash golang:1.8.3  <<EOF
 #!/bin/bash
 set -euo pipefail

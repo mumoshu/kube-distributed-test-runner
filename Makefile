@@ -21,10 +21,14 @@ web-kube-run: docker-build
 	kubectl expose deployment kube-selenium --port 8000 --target-port 8000 --type NodePort
 
 deps-kube-run:
-  if ! helm list | grep ^selenium-grid; then helm install --set chromeDebug.enabled=true --set firefoxDebug.enabled=true --name selenium-grid stable/selenium; fi
+	if ! helm list | grep ^selenium-grid; then helm install --set chromeDebug.enabled=true --set firefoxDebug.enabled=true --name selenium-grid stable/selenium; fi
 	if ! helm list | grep kube-selenium-mysql; then helm install --name kube-selenium-mysql --set mysqlDatabase=kube_selenium stable/mysql; fi
 	if ! helm list | grep kube-selenium-redis; then helm install --name kube-selenium-redis stable/redis; fi
+	if ! helm list | grep minio; then helm install --name minio stable/minio; fi
 
 format:
 	test -z "$$(find . -path ./vendor -prune -type f -o -name '*.go' -exec gofmt -d {} + | tee /dev/stderr)" || \
 	test -z "$$(find . -path ./vendor -prune -type f -o -name '*.go' -exec gofmt -w {} + | tee /dev/stderr)"
+
+glide-up:
+	glide update --strip-vendor

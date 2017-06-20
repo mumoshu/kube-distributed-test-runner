@@ -1,0 +1,90 @@
+{
+    "_meta": {
+        "hash": {
+            "sha256": "f8b5f73b3efccc278ed7506fa721b6ac621b30eba4f2299e99d6f1a506a47992"
+        },
+        "requires": {},
+        "sources": [
+            {
+                "url": "https://pypi.python.org/simple",
+                "verify_ssl": true
+            }
+        ]
+    },
+    "default": {
+        "apipkg": {
+            "version": "==1.4"
+        },
+        "backports.ssl-match-hostname": {
+            "version": "==3.5.0.1"
+        },
+        "certifi": {
+            "version": "==2017.4.17"
+        },
+        "execnet": {
+            "version": "==1.4.1"
+        },
+        "httplib2": {
+            "version": "==0.10.3"
+        },
+        "ipaddress": {
+            "version": "==1.0.18"
+        },
+        "kubernetes": {
+            "version": "==2.0.0"
+        },
+        "minio": {
+            "version": "==2.2.2"
+        },
+        "oauth2client": {
+            "version": "==4.1.1"
+        },
+        "py": {
+            "version": "==1.4.34"
+        },
+        "pyasn1": {
+            "version": "==0.2.3"
+        },
+        "pyasn1-modules": {
+            "version": "==0.0.9"
+        },
+        "pytest": {
+            "version": "==3.1.2"
+        },
+        "pytest-xdist": {
+            "version": "==1.17.1"
+        },
+        "python-dateutil": {
+            "version": "==2.6.0"
+        },
+        "pytz": {
+            "version": "==2017.2"
+        },
+        "pyyaml": {
+            "version": "==3.12"
+        },
+        "rsa": {
+            "version": "==3.4.2"
+        },
+        "selenium": {
+            "version": "==3.4.3"
+        },
+        "setuptools": {
+            "version": "==36.0.1"
+        },
+        "six": {
+            "version": "==1.10.0"
+        },
+        "urllib3": {
+            "version": "==1.21.1"
+        },
+        "websocket-client": {
+            "version": "==0.40.0"
+        }
+    },
+    "develop": {
+        "selenium": {
+            "version": "==3.4.3"
+        }
+    }
+}

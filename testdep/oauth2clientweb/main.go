@@ -1,4 +1,4 @@
-package oauth2tester
+package main
 
 import (
 	"database/sql"

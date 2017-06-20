@@ -8,6 +8,14 @@ redis_password() {
   kubectl get secret --namespace default kube-selenium-redis-redis -o jsonpath="{.data.redis-password}" | base64 --decode
 }
 
+minio_accesskey() {
+  kubectl get secret --namespace default minio-minio-user -o jsonpath="{.data.accesskey}" | base64 --decode
+}
+
+minio_secretkey() {
+  kubectl get secret --namespace default minio-minio-user -o jsonpath="{.data.secretkey}" | base64 --decode
+}
+
 redis() {
   kubectl run kube-selenium-redis-redis-client --rm --tty -i --env REDIS_PASSWORD=$(redis_password) --image bitnami/redis:3.2.9-r0 -- bash
 }
