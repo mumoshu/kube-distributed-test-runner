@@ -205,6 +205,7 @@ func main() {
 		clientSecret := c.PostForm("oauth2_client_secret")
 		authzEndpointURL := c.PostForm("oauth2_authz_endpoint_url")
 		tokenEndpointURL := c.PostForm("oauth2_token_endpoint_url")
+		redirectURL := c.PostForm("oauth2_redirect_uri")
 		scopes := c.PostForm("oauth2_scopes")
 		tx := db.MustBegin()
 		tx.MustExec(
@@ -228,8 +229,6 @@ func main() {
 			return
 		}
 
-		//redirectURL := fmt.Sprintf("http://%s/authz/test/callback", c.Request.Header.Get("HOST"))
-
 		state := randToken()
 		session := sessions.Default(c)
 		session.Set("state", state)
@@ -238,7 +237,7 @@ func main() {
 		conf := &oauth2.Config{
 			ClientID:     clientID,
 			ClientSecret: clientSecret,
-			//RedirectURL:  redirectURL,
+			RedirectURL:  redirectURL,
 			Scopes:       strings.Split(scopes, ","),
 			Endpoint: oauth2.Endpoint{
 				AuthURL:  authzEndpointURL,
