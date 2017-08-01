@@ -16,7 +16,8 @@ def test_chrome():
         'oauth2_client_secret': os.environ['OAUTH2_CLIENT_SECRET'],
         'oauth2_authz_endpoint_url': os.environ['OAUTH2_AUTHZ_ENDPOINT_URL'],
         'oauth2_token_endpoint_url': os.environ['OAUTH2_TOKEN_ENDPOINT_URL'],
-        'scopes': os.environ['OAUTH2_SCOPES'],
+        'oauth2_redirect_uri': os.getenv('OAUTH2_REDIRECT_URI', ''),
+        'oauth2_scopes': os.environ['OAUTH2_SCOPES'],
         'http_request_method': os.getenv('HTTP_REQUEST_METHOD', 'GET'),
         'http_request_url': os.environ['HTTP_REQUEST_URL'],
     }
